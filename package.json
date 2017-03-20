@@ -1,0 +1,20 @@
+{
+  "name": "kafka-json-consumer",
+  "version": "1.0.0",
+  "description": "Kafka JSON message consumer",
+  "main": "kafka-json-consumer.js",
+  "bin" : {
+    "kafka-json-consumer" : "./kafka-json-consumer.js"
+  },
+  "keywords": [
+    "kafka",
+    "json",
+    "consume"
+  ],
+  "author": "Ekin Sokmen",
+  "license": "ISC",
+  "dependencies" : {
+    "kafka-node" : "^1.5.0",
+    "commander": "^2.9.0"
+  }
+}
