@@ -35,3 +35,16 @@ title2|25
 title3|35
 ```
 
+* Usaging with `kafkaMsg`
+```
+> kafka-json-consumer -h localhost:2181 -t test_topic -p "kafkaMsg.offset,msg.title,msg.total" -f "%s|%s|%s"
+```
+
+Sample output:
+```
+556|title1|15
+557|title2|25
+558|title3|35
+```
+
+
