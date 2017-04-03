@@ -36,7 +36,9 @@ const consumer = new kafka.ConsumerGroup(
 );
 
 consumer.on('message', function (message) {
-  var msg = JSON.parse(message.value) || {};
+  var jsonStr = message.value;
+  jsonStr = jsonStr.replace(/([\[:])?(\d+)([,\}\]])/g, "$1\"$2\"$3");
+  var msg = JSON.parse(jsonStr) || {};
   var sandbox = {
     'out' : '',
     'msg' : msg,
