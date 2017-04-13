@@ -14,6 +14,7 @@ cmd
   .option('-p, --paths <paths>', 'Comma separated selectors of "msg" object (object paths) e.g. "msg.data, msg.name"')
   .option('-f, --format [format]', 'Optional output format as defined in util package e.g. "%s|%s"')
   .option('-g, --groupId [groupId]', 'Optional group id')
+  .option('-n, --convertNumbers', 'Convert integer numbers to string. This is a workaround to support 64-bit numbers (long, big-integers). If this flag is not used Javascript will round them while converting json to object.')
   .action(cmd.action)
   .parse(process.argv);
 
@@ -25,6 +26,7 @@ const outputFormat = cmd.format;
 const formatWrapper = outputFormat ? util.format('util.format("%s", %s)', outputFormat, jsonPathNames) : util.format('util.format(%s)', jsonPathNames);
 const outputWrapper = util.format('out=%s', formatWrapper);
 const outputScript = new vm.Script(outputWrapper);
+const convertNumbersToString = cmd.convertNumbers;
 
 const consumer = new kafka.ConsumerGroup(
   {
@@ -37,7 +39,9 @@ const consumer = new kafka.ConsumerGroup(
 
 consumer.on('message', function (message) {
   var jsonStr = message.value;
-  jsonStr = jsonStr.replace(/([\[:])?(\d+)([,\}\]])/g, "$1\"$2\"$3");
+  if (convertNumbersToString) {
+  	jsonStr = jsonStr.replace(/(:)([\d]+)([,\}])/g, "$1\"$2\"$3");
+  }
   var msg = JSON.parse(jsonStr) || {};
   var sandbox = {
     'out' : '',
