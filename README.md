@@ -35,7 +35,7 @@ title2|25
 title3|35
 ```
 
-#### Usaging with `kafkaMsg`
+#### Usage with `kafkaMsg`
 ```
 > kafka-json-consumer -h localhost:2181 -t test_topic -p "kafkaMsg.offset,msg.title,msg.total" -f "%s|%s|%s"
 ```
